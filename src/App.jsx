@@ -11,7 +11,6 @@ import Footer from "./components/Footer";
 
 import "./App.css";
 import MainDashboard from "./pages/Dashboard";
-// import WorkoutTable from "./pages/WorkoutTable";
 
 function App() {
   return (
@@ -23,7 +22,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<MainDashboard />} />
+        <Route path="/userdashboard" element={<MainDashboard />} />
       </Routes>
       <Footer />
     </div>
