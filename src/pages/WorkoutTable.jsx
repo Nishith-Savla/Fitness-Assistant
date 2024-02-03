@@ -1,20 +1,33 @@
 import React, { useState, useEffect, useRef } from "react";
 import alanBtn from "@alan-ai/alan-sdk-web";
 import Webcam from "react-webcam";
-import "../App.css"
+import "../App.css";
 
 function WorkoutTable() {
   const [workoutData, setWorkoutData] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
-
-const [selectedExercise, setSelectedExercise] = useState(null);
+  const [selectedExercise, setSelectedExercise] = useState(null);
   const [selectedSet, setSelectedSet] = useState(null);
-
   const [isStreaming, setIsStreaming] = useState(false);
   const [isStartButtonDisabled, setIsStartButtonDisabled] = useState(false);
-
   const webcamRef = useRef(null);
   const videoRef = useRef(null);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    // WebSocket Connection
+    const socket = new WebSocket("wss://0.tcp.in.ngrok.io:18913/ws");
+    socket.onopen = () => {
+      console.log("WebSocket connected");
+      setSocket(socket);
+    };
+    socket.onclose = () => console.log("WebSocket disconnected");
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     fetch("/data.json")
@@ -47,43 +60,36 @@ const [selectedExercise, setSelectedExercise] = useState(null);
         console.log("STARTED 2");
         videoRef.current.srcObject = stream;
         setIsStreaming(true);
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          stream.getTracks().forEach((track) => {
+            socket.send(track);
+          });
+        }
       }
     } catch (err) {
       console.error("Error accessing webcam:", err);
     }
   };
 
- 
-
-  
-
   const stopStreaming = () => {
     if (videoRef.current) {
       const stream = videoRef.current.srcObject;
-
       if (stream) {
         const tracks = stream.getTracks();
-
         tracks.forEach((track) => {
           track.stop();
         });
-
         videoRef.current.srcObject = null;
       }
-
       setIsStreaming(false);
-
-
-
       setIsStartButtonDisabled(true);
     }
   };
 
-
   return (
     <div
       style={{
-        display: 'flex',
+        display: "flex",
       }}
     >
       <div>
@@ -146,7 +152,7 @@ const [selectedExercise, setSelectedExercise] = useState(null);
           autoPlay
           playsInline
           muted
-          style={{ width: "100vh", height: "auto", marginTop:"-40vh"}}
+          style={{ width: "100vh", height: "auto", marginTop: "-40vh" }}
         />
       </div>
     </div>

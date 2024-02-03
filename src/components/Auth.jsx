@@ -26,19 +26,16 @@ function Auth({ isLogin }) {
       });
 
       if (response.ok) {
-        console.log(Array.from(response.headers.entries()));
-        cookies.set(
-          ...response.headers.get("set-cookie").split(";")[0].split("=")
-        );
+        
 
         // Login or Signup successful
-        // if (isLogin) {
-        //   // If it's a login, redirect to dashboard
-        //   window.location.href = "/dashboard";
-        // } else {
-        //   // If it's a signup, redirect to profile page
-        //   window.location.href = "/profile";
-        // }
+        if (isLogin) {
+          // If it's a login, redirect to dashboard
+          window.location.href = "/dashboard";
+        } else {
+          // If it's a signup, redirect to profile page
+          window.location.href = "/profile";
+        }
       } else {
         // Login or Signup failed, display error message
         const errorData = await response.json();
