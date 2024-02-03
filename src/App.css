@@ -36,3 +36,157 @@ body {
 .svg-icon path {
   @apply fill-indigo-700 dark:fill-indigo-500;
 }
+
+/* MainDashboard */
+
+.credit-card {
+  width: 360px;
+  height: 220px;
+  background: linear-gradient(135deg, #316cd8, #1a7dd9, #0f2963);
+  color: #fff;
+  margin-top: 40px;
+  margin-left: 40px;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  filter: brightness(90%); /* Apply the blue tint */
+}
+
+.credit-card-front,
+.credit-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.credit-card-front {
+  transform: rotateY(0deg);
+}
+
+.credit-card-back {
+  transform: rotateY(180deg);
+}
+
+.card-number {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.cardholder-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.expiry-cvv {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -20px;
+  margin-left: 100px;
+}
+
+.expiry,
+.cvv {
+  font-size: 14px;
+  margin-left: 100px;
+}
+
+.signature {
+  width: 120px;
+  height: 40px;
+  background-color: #fff;
+  margin-top: 20px;
+}
+
+.magnetic-stripe {
+  height: 30px;
+  background-color: #888;
+  margin-top: 10px;
+}
+
+.themainstats {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 1450px;
+  margin-left: 40px;
+  border-radius: 20px;
+  justify-content: space-between;
+  margin-top: 30px;
+  height: 800px;
+}
+
+.money-analytics {
+  color: white;
+  font-family: "poppins", sans-serif;
+  background: linear-gradient(135deg, #316cd8, #1a7dd9, #0f2963);
+  height: 400px;
+  width: 600px;
+  margin-left: 500px;
+  margin-top: -600px;
+  transform: translate(40%, -30%);
+}
+
+.money-analytics-body {
+  background: white;
+  border-radius: 10px;
+  width: 550px;
+  height: 300px;
+  transform: translate(5%, -2%);
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 10vh;
+  margin-left: 10vw;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+.title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.info-icon {
+  font-size: 20px;
+  color: #007bff;
+}
+
+.text {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.bottom {
+  font-size: 14px;
+  color: #666;
+}
+
+.mycalendar {
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20vh;
+  margin-left: 12vw;
+  height: 50vh !important;
+}

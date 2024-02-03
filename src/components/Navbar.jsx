@@ -36,6 +36,12 @@ const Navbar = () => {
             >
               Home
             </Link>
+            <Link
+              to="/userdashboard"
+              className="mr-2 p-2 hover:text-indigo-800 dark:text-gray-100 dark:hover:text-indigo-400"
+            >
+              Dashboard
+            </Link>
             <a
               href="#exercises"
               className="hover:text-indigo-800 p-2 dark:text-gray-100 dark:hover:text-indigo-400"

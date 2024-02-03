@@ -4,6 +4,7 @@ import WebcamComponent from "../components/WebcamComponent";
 
 const Signup = () => {
   const [name, setName] = useState("");
+  const [email, setemail] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [sex, setSex] = useState("");
@@ -20,6 +21,7 @@ const Signup = () => {
     console.log(photoURL);
     const formData = {
       name: name,
+      email: email,
       height: height,
       weight: weight,
       sex: sex,
@@ -62,6 +64,18 @@ const Signup = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="input-field"
+              required
+            />
+          </label>
+        </div>
+        <div className="input-group">
+          <label>
+            Email:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setemail(e.target.value)}
               className="input-field"
               required
             />
