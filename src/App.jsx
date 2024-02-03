@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 
 import "./App.css";
 import MainDashboard from "./pages/Dashboard";
+import WorkoutTable from "./pages/WorkoutTable";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/exercise/:id" element={<ExerciseDetail />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/userdashboard" element={<MainDashboard />} />
+        <Route path="/workout" element={<WorkoutTable />}/>
       </Routes>
       <Footer />
     </div>

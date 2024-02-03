@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@alan-ai/alan-sdk-web": "^1.8.54",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
@@ -26,6 +27,7 @@
     "react-icons": "^5.0.1",
     "react-player": "^2.10.1",
     "react-router-dom": "^6.3.0",
+    "react-webcam": "^7.2.0",
     "recharts": "^2.11.0"
   },
   "devDependencies": {

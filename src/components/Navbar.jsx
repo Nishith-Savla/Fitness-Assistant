@@ -19,7 +19,7 @@ const Navbar = () => {
             </Link>
             <Link to="/">
               <span className="ml-3 text-2xl dark:text-gray-100">
-                Fitness Freak
+                Fitness Assistant
               </span>
             </Link>
           </div>
@@ -42,12 +42,12 @@ const Navbar = () => {
             >
               Dashboard
             </Link>
-            <a
-              href="#exercises"
-              className="hover:text-indigo-800 p-2 dark:text-gray-100 dark:hover:text-indigo-400"
+            <Link
+              to="/workout"
+              className="mr-2 p-2 hover:text-indigo-800 dark:text-gray-100 dark:hover:text-indigo-400"
             >
-              Exercises
-            </a>
+              Workouts
+            </Link>
             <div className="mx-2">
               <ThemeMode />
             </div>
