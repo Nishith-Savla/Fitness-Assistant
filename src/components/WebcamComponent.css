@@ -1,0 +1,29 @@
+.webcam-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  margin: 10px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.video-container {
+  width: 600px; /* Set your desired width */
+  height: 400px; /* Set your desired height */
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.video {
+  width: 100%;
+  height: auto;
+}
+
+.preview-image {
+  width: 100%;
+  height: auto;
+}
