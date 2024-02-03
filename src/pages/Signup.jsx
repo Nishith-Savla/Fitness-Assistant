@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Signup.css"; // Import CSS file for styling
 import WebcamComponent from "../components/WebcamComponent";
 
@@ -7,7 +7,7 @@ const Signup = () => {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [sex, setSex] = useState("");
-  const [image, setImage] = useState("");
+  const [photoURL, setPhotoURL] = useState();
   const [healthConditions, setHealthConditions] = useState("");
   const [age, setAge] = useState("");
   const [fitnessLevel, setFitnessLevel] = useState("Beginner");
@@ -15,40 +15,42 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
-  };
 
-  const handleImageCapture = () => {
-    // Check if the browser supports media devices and getUserMedia API
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert("Sorry, your browser doesn't support camera access.");
-      return;
-    }
-
-    // Define constraints for the media stream (in this case, video)
-    const constraints = {
-      video: true,
+    // Create a JavaScript object with form data
+    console.log(photoURL);
+    const formData = {
+      name: name,
+      height: height,
+      weight: weight,
+      sex: sex,
+      image: photoURL,
+      healthConditions: healthConditions,
+      age: age,
+      fitnessLevel: fitnessLevel,
+      focusArea: focusArea,
     };
 
-    // Access the user's camera
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then((stream) => {
-        // Get the video element to display the camera stream
-        const video = document.createElement("video");
-        video.srcObject = stream;
-        video.autoplay = true;
+    console.log("Form data:", formData);
 
-        // Append the video element to the document body or any other container
-        document.body.appendChild(video);
+    // Example using fetch:
+    fetch("https://cb48-182-76-21-121.ngrok-free.app/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response from the server
+        console.log(data);
       })
       .catch((error) => {
-        console.error("Error accessing camera:", error);
-        alert(
-          "Error accessing camera. Please allow camera access and try again."
-        );
+        console.error("Error sending data to server:", error);
       });
   };
+
+  useEffect(() => console.log(photoURL), [photoURL]);
 
   return (
     <div className="signup-container">
@@ -103,7 +105,7 @@ const Signup = () => {
 
           <label>
             Body Type:
-            <WebcamComponent onCapture={handleImageCapture} />
+            <WebcamComponent photoURL={photoURL} setPhotoURL={setPhotoURL} />
           </label>
 
           <label>

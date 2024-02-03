@@ -1,8 +1,7 @@
 import React, { useState, useRef } from "react";
 
-const WebcamComponent = () => {
+const WebcamComponent = ({ photoURL, setPhotoURL }) => {
   const videoRef = useRef(null);
-  const [photoURL, setPhotoURL] = useState("");
 
   const startWebcam = async () => {
     try {
@@ -43,13 +42,25 @@ const WebcamComponent = () => {
       </button>
 
       <div>
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          style={{ width: "100%", height: "auto" }}
-        />
+        {photoURL ? (
+          <div>
+            <h2>Preview</h2>
+            <img
+              src={photoURL}
+              alt="Captured"
+              style={{ width: "100%", height: "auto" }}
+            />
+          </div>
+        ) : (
+          <video
+            id="body-posture-video"
+            ref={videoRef}
+            autoPlay
+            playsInline
+            muted
+            style={{ width: "100%", height: "auto" }}
+          />
+        )}
       </div>
 
       <button
@@ -65,16 +76,6 @@ const WebcamComponent = () => {
       >
         Take Photo
       </button>
-      {photoURL && (
-        <div>
-          <h2>Preview</h2>
-          <img
-            src={photoURL}
-            alt="Captured"
-            style={{ width: "100%", height: "auto" }}
-          />
-        </div>
-      )}
     </div>
   );
 };
