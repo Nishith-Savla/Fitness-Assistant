@@ -5,7 +5,7 @@ import ExerciseDetail from "./pages/ExerciseDetail";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-
+import WorkoutTable from "./pages/WorkoutTable";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -23,6 +23,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/userdashboard" element={<MainDashboard />} />
+        <Route path="/workout" element={<WorkoutTable />} />
       </Routes>
       <Footer />
     </div>

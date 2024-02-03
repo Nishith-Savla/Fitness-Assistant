@@ -2,14 +2,34 @@ import React, { useRef } from "react";
 
 const WebcamVideo = ({ onStartWebcam }) => {
   const videoRef = useRef(null);
+  let websocket = null;
+
+  useEffect(() => {
+    websocket = new WebSocket("wss://0a3e-182-76-21-121.ngrok-free.app/ws");
+    console.log("WebSocket created");
+
+    websocket.onopen = () => {
+      console.log("WebSocket connected");
+    };
+
+    return () => {
+      websocket.close();
+    };
+  }, []);
 
   const startWebcam = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-
-        onStartWebcam();
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data && websocket.readyState === WebSocket.OPEN) {
+            websocket.send(event.data);
+          }
+        };
+        mediaRecorder.start();
+        // onStartWebcam();
       }
     } catch (err) {
       console.error("Error accessing webcam:", err);
@@ -42,15 +62,14 @@ const WebcamVideo = ({ onStartWebcam }) => {
       </button>
 
       <div>
-          <video
-            id="body-posture-video"
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            style={{ width: "100%", height: "auto" }}
-          />
-        
+        <video
+          id="body-posture-video"
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          style={{ width: "100%", height: "auto" }}
+        />
       </div>
 
       <button
