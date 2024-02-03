@@ -27,11 +27,20 @@
 
 export const exerciseOptions = {
   method: "GET",
+  url: "https://exercisedb.p.rapidapi.com/exercises/bodyPart/back",
+  params: { limit: "10" },
   headers: {
-    "X-RapidAPI-Key": "33939205a2msh42c870be6be2d70p1aabc5jsnee15fcc24dc5",
+    "X-RapidAPI-Key": "e7d7614529mshf3b0e6977befcc6p13700fjsn7c359e421cda",
     "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
   },
 };
+
+try {
+  const response = await axios.request(options);
+  console.log(response.data);
+} catch (error) {
+  console.error(error);
+}
 
 export const youtubeOptions = {
   method: "GET",

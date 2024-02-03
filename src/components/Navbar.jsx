@@ -23,12 +23,20 @@ const Navbar = () => {
               </span>
             </Link>
           </div>
+
           <nav className="flex flex-wrap items-center text-base justify-center">
             <Link
               to="/signup"
               className="mr-2 p-2 hover:text-indigo-800 dark:text-gray-100 dark:hover:text-indigo-400"
             >
               Signup
+            </Link>
+
+            <Link
+              to="/login"
+              className="mr-2 p-2 hover:text-indigo-800 dark:text-gray-100 dark:hover:text-indigo-400"
+            >
+              Login
             </Link>
             <Link
               to="/"
