@@ -17,3 +17,4 @@ class ProfilePayload(BaseModel):
     age: int
     fitnessLevel: str
     focusArea: str | None
+    user_id: str | None

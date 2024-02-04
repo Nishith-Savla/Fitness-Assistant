@@ -1,8 +1,6 @@
 import base64
 import json
 from contextlib import asynccontextmanager
-from typing import Annotated
-from webbrowser import get
 
 import google.generativeai as genai
 import motor.core
@@ -132,7 +130,7 @@ async def login(payload: AuthPayload, response: Response):
 
 
 @app.post("/profile")
-async def profile(user_id: str, payload: ProfilePayload):
+async def profile(payload: ProfilePayload):
     body_type = await identify_body_type(base64_image=payload.image)
 
     # Save the payload to mongodb
@@ -140,9 +138,10 @@ async def profile(user_id: str, payload: ProfilePayload):
     payload_dict = payload.dict()
     payload_dict['bodyType'] = body_type
     del payload_dict['image']
+    del payload_dict['user_id']
     payload_dict = dot_notate(payload_dict)
     update = {"$set": payload_dict}
-    await collection.update_one({"_id": ObjectId(user_id)}, update)
+    await collection.update_one({"_id": ObjectId(payload.user_id)}, update)
     return {"status": "success"}
 
 
@@ -226,11 +225,15 @@ async def identify_body_type(base64_image: str):
         return response
 
 
-async def get_image_from_base64_url(base64_image):
+async def get_image_from_base64_url(base64_image: str):
     return base64.decodebytes(
         bytes(base64_image.removeprefix('data:image/jpeg;base64,').removeprefix(
             'data:image/png;base64,'), encoding='utf-8'))
 
+
+# Get base64 url from image
+async def get_base64_url_from_image(image: bytes):
+    return "data:image/png;base64," + base64.b64encode(image).decode('utf-8')
 
 @app.get("/plan")
 async def get_plan(user_id: str | None = None):
@@ -283,12 +286,14 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         data = await websocket.receive_text()
         data = await get_image_from_base64_url(data)
+
         result = process_image(data)
+        if result is None:
+            continue
 
-        with open("result.png", "wb") as f:
-            f.write(result)
+        result = await get_base64_url_from_image(result)
 
-        await websocket.send_bytes(result)        
+        await websocket.send_text(result)
 
 
 # Hello route
