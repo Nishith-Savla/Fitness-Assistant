@@ -1,3 +1,4 @@
+import base64
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -5,7 +6,7 @@ import math
 
 
 
-cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(0)
 count = 0
 direction = 0
 form = 0
@@ -92,9 +93,10 @@ def get_angle(img, landmark_list, point1, point2, point3, draw=True):
     
     
     
-while cap.isOpened():
+while True:
     #Getting image from camera
-    ret, img = cap.read() 
+    nparr = np.fromstring(base64.b64decode(data), np.uint8)
+    cap = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     #Getting video dimensions
     width  = cap.get(3)  
     height = cap.get(4)  

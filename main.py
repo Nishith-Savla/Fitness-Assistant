@@ -13,6 +13,7 @@ from fastapi import FastAPI, Cookie, Response, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
+from deepfit.deepfit_integration import process_image
 from models.User import AuthPayload, ProfilePayload
 from utils import dot_notate
 
@@ -282,6 +283,12 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         data = await websocket.receive_text()
         data = await get_image_from_base64_url(data)
+        result = process_image(data)
+
+        with open("result.png", "wb") as f:
+            f.write(result)
+
+        await websocket.send_bytes(result)        
 
 
 # Hello route

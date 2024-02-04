@@ -1,7 +1,9 @@
+import base64
 import cv2
 import mediapipe as mp
 import matplotlib.pyplot as plt
-from DeepFitClassifier import DeepFitClassifier
+import requests
+from .DeepFitClassifier import DeepFitClassifier
 import numpy as np
 from collections import deque
 import math
@@ -11,8 +13,6 @@ import math
 lm_dict = {
   0:0 , 1:10, 2:12, 3:14, 4:16, 5:11, 6:13, 7:15, 8:24, 9:26, 10:28, 11:23, 12:25, 13:27, 14:5, 15:2, 16:8, 17:7,
 }
-
-
 
 def set_pose_parameters():
     mode = False 
@@ -24,6 +24,28 @@ def set_pose_parameters():
     trackCon = 0.5
     mpPose = mp.solutions.pose
     return mode,complexity,smooth_landmarks,enable_segmentation,smooth_segmentation,detectionCon,trackCon,mpPose
+
+mode, complexity, smooth_landmarks, enable_segmentation, smooth_segmentation, detectionCon, trackCon, mpPose = set_pose_parameters()
+pose = mpPose.Pose(mode, complexity, smooth_landmarks,
+                            enable_segmentation, smooth_segmentation,
+                            detectionCon, trackCon)
+
+
+# Setting variables for video feed
+def set_video_feed_variables():
+    #cap = cv2.VideoCapture(0)
+    count = 0
+    direction = 0
+    form = 0
+    feedback = "Bad Form."
+    frame_queue = deque(maxlen=250)
+    clf = DeepFitClassifier("deepfit/models/deepfit_classifier_v3.tflite")
+    return count,direction,form,feedback,frame_queue,clf
+
+
+# Setting video feed variables
+count, direction, form, feedback, frame_queue, clf = set_video_feed_variables()
+
 
 
 def get_pose (img, results, draw=True):        
@@ -94,18 +116,6 @@ def convert_mediapipe_keypoints_for_model(lm_dict, landmark_list):
             inp_pushup.append(round(landmark_list[lm_dict[index-18]][2],3))
     return inp_pushup
 
-
-
-# Setting variables for video feed
-def set_video_feed_variables():
-    cap = cv2.VideoCapture(0)
-    count = 0
-    direction = 0
-    form = 0
-    feedback = "Bad Form."
-    frame_queue = deque(maxlen=250)
-    clf = DeepFitClassifier("models/deepfit_classifier_v3.tflite")
-    return cap,count,direction,form,feedback,frame_queue,clf
 
 
 def set_percentage_bar_and_text(elbow_angle, knee_angle, workout_name_after_smoothening):
@@ -327,24 +337,10 @@ def display_workout_stats(count, form, feedback, draw_percentage_progress_bar, d
     show_workout_name_from_model(img, workout_name_after_smoothening)
 
 
-
-
-def main():
-    mode, complexity, smooth_landmarks, enable_segmentation, smooth_segmentation, detectionCon, trackCon, mpPose = set_pose_parameters()
-    pose = mpPose.Pose(mode, complexity, smooth_landmarks,
-                                enable_segmentation, smooth_segmentation,
-                                detectionCon, trackCon)
-
-
-    # Setting video feed variables
-    cap, count, direction, form, feedback, frame_queue, clf = set_video_feed_variables()
-
-
-
-    #Start video feed and run workout
-    while cap.isOpened():
-        #Getting image from camera
-        ret, img = cap.read() 
+def process_image(data: bytes) -> bytes:
+    #Getting image from camera
+        nparr = np.fromstring(base64.b64decode(data), np.uint8)
+        cap = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         #Getting video dimensions
         width  = cap.get(3)  
         height = cap.get(4)  
@@ -506,11 +502,6 @@ def main():
                                 direction = 0
                         else:
                             feedback = "Feedback: Bad Form."
-
-
-            
-            
-     
             
             #Display workout stats        
             display_workout_stats(count, form, feedback, draw_percentage_progress_bar, display_rep_count, show_workout_feedback, show_workout_name_from_model, img, pushup_success_percentage, pushup_progress_bar, workout_name_after_smoothening)
@@ -524,12 +515,5 @@ def main():
         # Following line overlays transparent rectangle over the image
         image_new = cv2.addWeighted(overlay, alpha, img, 1 - alpha, 0)          
             
-        cv2.imshow('Workout Trainer', image_new)
-        if cv2.waitKey(10) & 0xFF == ord('q'):
-            break
-            
-    cap.release()
-    cv2.destroyAllWindows()
-
-if __name__ == "__main__":
-    main()
+        return image_new
+        
