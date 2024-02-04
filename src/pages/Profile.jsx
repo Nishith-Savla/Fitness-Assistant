@@ -24,7 +24,6 @@ const Signup = () => {
     // Create a JavaScript object with form data
     const formData = {
       name: name,
-      email: email,
       height: height,
       weight: weight,
       sex: sex,
@@ -33,10 +32,13 @@ const Signup = () => {
       age: age,
       fitnessLevel: fitnessLevel,
       focusArea: focusArea,
+      user_id: cookies.user_id,
     };
 
+    console.log("Form data:", formData);
+
     // Example using fetch:
-    fetch("https://cb48-182-76-21-121.ngrok-free.app/profile", {
+    fetch("https://df88-182-76-21-121.ngrok-free.app/profile", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

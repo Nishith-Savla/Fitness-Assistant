@@ -1,4 +1,4 @@
-import HeroBannerImage from "../assets/images/banner.png"
+import HeroBannerImage from "../assets/images/banner.png";
 
 const HeroBanner = () => {
   return (
@@ -7,13 +7,15 @@ const HeroBanner = () => {
         <div className="mx-auto container flex md:flex-row flex-col items-center md:items-start">
           <div className="lg:flex-grow md:w-1/2 flex flex-col md:items-start md:text-left mb-28 lg:mb-52 items-center text-center relative py-10 md:px-20 md:py-20 lg:py-36">
             <h1 className="title-font text-3xl mb-6 font-semibold text-indigo-900 dark:text-indigo-400">
-              Welcome Dear!
+              Welcome Fitness Junkie!
             </h1>
             <h1 className="title-font sm:text-5xl text-4xl mb-4 font-bold text-gray-900 dark:text-gray-200">
               Sweat, Smile
               <br className="md:inline-block hidden" /> & Repeat.
             </h1>
-            <p className="mb-8 leading-relaxed dark:text-gray-200">Check out the most effective exercises</p>
+            <p className="mb-8 leading-relaxed dark:text-gray-200">
+              Check out the most effective exercises
+            </p>
             <div className="flex justify-center">
               <a
                 href="#exercises"
@@ -37,7 +39,7 @@ const HeroBanner = () => {
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default HeroBanner
+export default HeroBanner;

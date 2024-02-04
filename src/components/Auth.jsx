@@ -1,21 +1,18 @@
 import React, { useState } from "react";
-import "./Auth.css"; // Import CSS file for styling
 import { Cookies } from "react-cookie";
+import "./auth.css";
 
 function Auth({ isLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
-
   const cookies = new Cookies();
 
   const handleAuth = async () => {
-    console.log("Email:", email);
-    console.log("Password", password);
     try {
       const url = isLogin
-        ? "https://cb48-182-76-21-121.ngrok-free.app/login"
-        : "https://cb48-182-76-21-121.ngrok-free.app/signup";
+        ? "https://df88-182-76-21-121.ngrok-free.app/login"
+        : "https://df88-182-76-21-121.ngrok-free.app/signup";
 
       const response = await fetch(url, {
         method: "POST",
@@ -26,18 +23,14 @@ function Auth({ isLogin }) {
       });
 
       if (response.ok) {
-        
-
-        // Login or Signup successful
+        const userData = await response.json();
+        cookies.set("user_id", userData.user_id); // Save user_id in cookies
         if (isLogin) {
-          // If it's a login, redirect to dashboard
-          window.location.href = "/dashboard";
+          window.location.href = "/userdashboard";
         } else {
-          // If it's a signup, redirect to profile page
           window.location.href = "/profile";
         }
       } else {
-        // Login or Signup failed, display error message
         const errorData = await response.json();
         setLoginError(errorData.message);
       }
