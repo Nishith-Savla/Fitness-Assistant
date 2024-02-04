@@ -2,10 +2,12 @@ import base64
 import json
 from contextlib import asynccontextmanager
 from typing import Annotated
+from webbrowser import get
 
 import google.generativeai as genai
 import motor.core
 import uvicorn
+from PIL.Image import Image
 from bson import ObjectId
 from fastapi import FastAPI, Cookie, Response, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
@@ -145,9 +147,7 @@ async def profile(user_id: str, payload: ProfilePayload):
 
 @app.post("/identify-body-type")
 async def identify_body_type(base64_image: str):
-    image = base64.decodebytes(
-        bytes(base64_image.removeprefix('data:image/jpeg;base64,').removeprefix(
-            'data:image/png;base64,'), encoding='utf-8'))
+    image = await get_image_from_base64_url(base64_image)
     image_parts = [
         {
             "mime_type": "image/jpeg",
@@ -225,6 +225,12 @@ async def identify_body_type(base64_image: str):
         return response
 
 
+async def get_image_from_base64_url(base64_image):
+    return base64.decodebytes(
+        bytes(base64_image.removeprefix('data:image/jpeg;base64,').removeprefix(
+            'data:image/png;base64,'), encoding='utf-8'))
+
+
 @app.get("/plan")
 async def get_plan(user_id: str | None = None):
     if user_id is None:
@@ -274,8 +280,14 @@ Output format:
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
-        data = await websocket.receive_bytes()
-        await websocket.send_bytes(data)
+        data = await websocket.receive_text()
+        data = await get_image_from_base64_url(data)
+
+
+# Hello route
+@app.get("/")
+async def read_root():
+    return {"Hello": "World"}
 
 
 if __name__ == '__main__':
